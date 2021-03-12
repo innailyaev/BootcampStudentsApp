@@ -1,6 +1,7 @@
 const table=document.querySelector('#table');
 const select=document.querySelector("#select");
 const searchInput=document.querySelector("#searchInput");
+let loader=document.querySelector('#loader');
 
 const usersApi='https://appleseed-wa.herokuapp.com/api/users/';
 const user='https://appleseed-wa.herokuapp.com/api/users';
@@ -17,6 +18,8 @@ async function getDetalisApi(id){
 }
 
 async function getUsersApi(){
+    loader.style.display='block';
+    table.style.display='none';
     const response = await fetch(usersApi);
     let usersResult= await response.json();
     usersData = await Promise.all(
@@ -25,6 +28,8 @@ async function getUsersApi(){
             return {id:u.id,firstName: u.firstName, lastName: u.lastName, capsule: u.capsule, 
                 city:detalis.city, age : detalis.age, gender:detalis.gender, hobby:detalis.hobby }})
     )
+    loader.style.display='none';
+    table.style.display='block';
 }
 
 async function createTable() {
@@ -40,6 +45,8 @@ async function createTable() {
             <th>City</th>
             <th>Gender</th>
             <th>Hobby</th>
+            <th></th>
+            <th></th>
         </tr>
       <thead>`
         usersData.forEach( (u) => {
@@ -107,56 +114,86 @@ function searchByCategory(){
     }
 }
 
-function upDate(id){
-    let newDetails=[];
+function editDetails(id){
     let index=usersData.findIndex((p) => p.id ==id);
-
-    console.log(index);
     let tr=document.getElementById(`${id}`);
-    console.log(tr);
     tr.innerHTML=`<td >${id}</td>
-                <td><input id=FN class=editInput type=text value=${usersData[index].firstName}></td>
-                <td><input id=LN class=editInput type=text value=${usersData[index].lastName}></td>
-                <td><input id=CP class=editInput type=text value=${usersData[index].capsule}></td>
-                <td><input id=AG class=editInput type=text value=${usersData[index].age}></td>
-                <td><input id=CT class=editInput type=text value=${usersData[index].city}></td>
-                <td><input id=GE class=editInput type=text value=${usersData[index].gender}></td>
-                <td><input id=HB class=editInput type=text value=${usersData[index].hobby}></td>
+                <td><input class=editInput type=text value=${usersData[index].firstName}></td>
+                <td><input class=editInput type=text value=${usersData[index].lastName}></td>
+                <td><input class=editInput type=text value=${usersData[index].capsule}></td>
+                <td><input class=editInput type=text value=${usersData[index].age}></td>
+                <td><input class=editInput type=text value=${usersData[index].city.replace(/ /g, "")}></td>
+                <td><input class=editInput type=text value=${usersData[index].gender}></td>
+                <td><input class=editInput type=text value=${usersData[index].hobby}></td>
                 <td><button id=${id} class=confirm>Confirm</button></td>
-                <td><button id=${id} class=cancel>Cancel</button></td>`
-    
-        for(let i=1;i<tr.cells.length;i++){
-            console.log(tr.children[i].firstChild.value);
-
-        }
-        console.log(tr.cells.length);
-        // console.log(tr.children[i].firstChild.value
-
-
+                <td><button id=${id} class=cancel>Cancel</button></td>`      
 }
 
-function confirm(){
+function confirm(id){
+    let newDetails=[];
+    let j=0;
+    let tr=document.getElementById(`${id}`);
+    for(let i=1;i<tr.cells.length-2;i++){
+        newDetails[j]=tr.children[i].firstChild.value;
+        j++;
+    }
+    tr.innerHTML=`<td >${id}</td>
+                <td>${newDetails[0]}</td>
+                <td>${newDetails[1]}</td>
+                <td>${newDetails[2]}</td>
+                <td>${newDetails[3]}</td>
+                <td>${newDetails[4]}</td>
+                <td>${newDetails[5]}</td>
+                <td>${newDetails[6]}</td>
+                <td><button id=${id} btn class=edit>Edit</button></td>
+                <td><button id=${id} btn class=delete>delete</button></td>`
 
-
+        upDateUsersArray(id,newDetails);  
 }
+
+function upDateUsersArray(id,newUserDetails){
+    let index=usersData.findIndex((p) => p.id ==id);
+    usersData[index].firstName=newUserDetails[0];
+    usersData[index].lastName=newUserDetails[1];
+    usersData[index].capsule=newUserDetails[2];
+    usersData[index].age=newUserDetails[3];
+    usersData[index].city=newUserDetails[4];
+    usersData[index].gender=newUserDetails[5];
+    usersData[index].hobby=newUserDetails[6];
+}
+
+function cancelEdit(id){
+    let index=usersData.findIndex((p) => p.id ==id);
+    let tr=document.getElementById(`${id}`);
+    tr.innerHTML=`<td >${id}</td>
+                <td>${usersData[index].firstName}</td>
+                <td>${usersData[index].lastName}</td>
+                <td>${usersData[index].capsule}</td>
+                <td>${usersData[index].age}</td>
+                <td>${usersData[index].city}</td>
+                <td>${usersData[index].gender}</td>
+                <td>${usersData[index].hobby}</td>
+                <td><button id=${id} btn class=edit>Edit</button></td>
+                <td><button id=${id} btn class=delete>delete</button></td>`
+}
+
 
 //Event listener
 table.addEventListener('click',(e)=>{
-    
-    
-    console.log(e.target.getAttribute('class'));
     let row=e.target.getAttribute('id');
-    console.log(row);
     switch(e.target.getAttribute('class')){
         case('delete'):
             removeUserFromArray(row);
             break;
         case ('edit'):
-            upDate(row);
+            editDetails(row);
             break;
         case ('confirm'):
             confirm(row);
-            break;    
+            break;
+        case ('cancel'):
+            cancelEdit(row);
+            break;            
     }
     
 })
