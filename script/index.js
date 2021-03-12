@@ -2,6 +2,7 @@ const table=document.querySelector('#table');
 const select=document.querySelector("#select");
 const searchInput=document.querySelector("#searchInput");
 let loader=document.querySelector('#loader');
+const logo=document.querySelector(".logo");
 
 const usersApi='https://appleseed-wa.herokuapp.com/api/users/';
 const user='https://appleseed-wa.herokuapp.com/api/users';
@@ -20,6 +21,7 @@ async function getDetalisApi(id){
 async function getUsersApi(){
     loader.style.display='block';
     table.style.display='none';
+    logo.style.display='none';
     const response = await fetch(usersApi);
     let usersResult= await response.json();
     usersData = await Promise.all(
@@ -30,6 +32,7 @@ async function getUsersApi(){
     )
     loader.style.display='none';
     table.style.display='block';
+    logo.style.display='block';
 }
 
 async function createTable() {
@@ -40,7 +43,7 @@ async function createTable() {
             <th>id</th>
             <th>First Name</th>
             <th>Last Name</th>
-            <th>capsule</th>
+            <th>Capsule</th>
             <th>Age</th>
             <th>City</th>
             <th>Gender</th>
@@ -60,11 +63,10 @@ async function createTable() {
         <td>${u.city}</td>
         <td>${u.gender}</td>
         <td>${u.hobby}</td>
-        <td><button id=${u.id} btn class=edit>Edit</button></td>
-        <td><button id=${u.id} btn class=delete>delete</button></td>
+        <td><i id=${u.id} class="far fa-edit fa-2x" type="edit"></i></td>
+        <td><i id=${u.id} class="far fa-trash-alt fa-2x" type="delete"></i></td>
     </tr>`
     })
-    console.log(usersData);
 }
 
 function removeUserFromArray(id){
@@ -125,8 +127,8 @@ function editDetails(id){
                 <td><input class=editInput type=text value=${usersData[index].city.replace(/ /g, "")}></td>
                 <td><input class=editInput type=text value=${usersData[index].gender}></td>
                 <td><input class=editInput type=text value=${usersData[index].hobby}></td>
-                <td><button id=${id} class=confirm>Confirm</button></td>
-                <td><button id=${id} class=cancel>Cancel</button></td>`      
+                <td><i id=${id} class="far fa-check-square fa-2x" type="confirm"></i></td>
+                <td><i id=${id} class="far fa-window-close fa-2x" type="cancel"></i></td>`      
 }
 
 function confirm(id){
@@ -145,13 +147,13 @@ function confirm(id){
                 <td>${newDetails[4]}</td>
                 <td>${newDetails[5]}</td>
                 <td>${newDetails[6]}</td>
-                <td><button id=${id} btn class=edit>Edit</button></td>
-                <td><button id=${id} btn class=delete>delete</button></td>`
+                <td><i id=${id} class="far fa-edit fa-2x" type="edit"></i></td>
+                <td><i id=${id} class="far fa-trash-alt fa-2x" type="delete"></i></td>`
 
-        upDateUsersArray(id,newDetails);  
+        updateUsersArray(id,newDetails);  
 }
 
-function upDateUsersArray(id,newUserDetails){
+function updateUsersArray(id,newUserDetails){
     let index=usersData.findIndex((p) => p.id ==id);
     usersData[index].firstName=newUserDetails[0];
     usersData[index].lastName=newUserDetails[1];
@@ -173,15 +175,15 @@ function cancelEdit(id){
                 <td>${usersData[index].city}</td>
                 <td>${usersData[index].gender}</td>
                 <td>${usersData[index].hobby}</td>
-                <td><button id=${id} btn class=edit>Edit</button></td>
-                <td><button id=${id} btn class=delete>delete</button></td>`
+                <td><i id=${id} class="far fa-edit fa-2x" type="edit"></i></td>
+                <td><i id=${id} class="far fa-trash-alt fa-2x" type="delete"></i></td>`
 }
 
 
 //Event listener
 table.addEventListener('click',(e)=>{
     let row=e.target.getAttribute('id');
-    switch(e.target.getAttribute('class')){
+    switch(e.target.getAttribute('type')){
         case('delete'):
             removeUserFromArray(row);
             break;
