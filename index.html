@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,11 +8,26 @@
     <link rel="stylesheet" href="/css/style.css">
     <title>Document</title>
 </head>
+
 <body>
     <div id="loader"></div>
-    <div id="toolBar"></div>
+    <div id="toolBar">
+        <label for="">Search:</label>
+        <input type="text" id="searchInput"  placeholder="Search by category..">
+        <select name="" id="select">
+            <option value="FN">First name</option>
+            <option value="LN">Last name</option>
+            <option value="Cp">Capsule</option>
+            <option value="age">Age</option>
+            <option value="city">City</option>
+            <option value="gender">Gender</option>
+            <option value="hobby">Hobby</option>
+        </select>
+    </div>
+
     <table id="table"></table>
 
     <script src="/script/index.js"></script>
 </body>
+
 </html>

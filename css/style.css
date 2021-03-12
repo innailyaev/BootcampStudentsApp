@@ -17,13 +17,23 @@
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
 }
+#toolBar{
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
 
 #table{
     border: solid black;
     padding: 10px;
-    font-size: 20px
+    font-size: 20px;
+    width: 1200px;
 }
 
 #table td{
     padding-left: 10px;
+}
+
+.editInput{
+    width: 90px;
+    font-size: 1rem;
 }
