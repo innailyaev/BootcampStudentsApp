@@ -1,14 +1,13 @@
 const table=document.querySelector('#table');
 const select=document.querySelector("#select");
 const searchInput=document.querySelector("#searchInput");
-let loader=document.querySelector('#loader');
+const loader=document.querySelector('#loader');
 const logo=document.querySelector(".logo");
 const usersApi='https://appleseed-wa.herokuapp.com/api/users/';
 const user='https://appleseed-wa.herokuapp.com/api/users';
 let usersData=[];
 let userDetails=[];
 let arrLength;
-// getUsersApi();
 createTable();
 
 async function getDetalisApi(id){
@@ -36,7 +35,6 @@ async function getUsersApi(){
 
 async function createTable() {
     if(localStorage.getItem('students')){
-        console.log('local storage');
         usersData=JSON.parse(localStorage.getItem('students'));
     }
     else
@@ -87,22 +85,21 @@ function removeUserFromArray(id){
 
 function removeUserUi(id){
     let row=document.getElementById(`${id}`);
-    // row.style.display='none';    
     row.parentNode.removeChild(row);
 }
 
 function searchByValue(){
         let selectValue=searchByCategory();
-        let filter, tr, td, i, txtValue;
-        filter = searchInput.value.toUpperCase();
+        let filterValue, tr, td, i, txtValue;
+        filterValue = searchInput.value.toUpperCase();
         tr = table.getElementsByTagName("tr");
-      
+        
         // Loop through all table rows, and hide those who don't match the search query
         for (i = 0; i < tr.length; i++) {
           td = tr[i].getElementsByTagName("td")[selectValue];
           if (td) {
             txtValue = td.textContent || td.innerText;
-            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+            if (txtValue.toUpperCase().indexOf(filterValue) > -1) {
               tr[i].style.display = "";
             } else {
               tr[i].style.display = "none";
@@ -133,7 +130,7 @@ function editDetails(id){
                 <td><input class=editInput type=text value=${usersData[index].age}></td>
                 <td><input class=editInput type=text value=${usersData[index].city.replace(/ /g, "")}></td>
                 <td><input class=editInput type=text value=${usersData[index].gender}></td>
-                <td><input class=editInput type=text value=${usersData[index].hobby}></td>
+                <td><input class=editInput type=text value=${usersData[index].hobby.replace(/ /g, "")}></td>
                 <td><i id=${id} class="far fa-check-square fa-2x" type="confirm"></i></td>
                 <td><i id=${id} class="far fa-window-close fa-2x" type="cancel"></i></td>`      
 }
@@ -162,13 +159,12 @@ function confirm(id){
 
 function updateUsersArray(id,newUserDetails){
     let index=usersData.findIndex((p) => p.id ==id);
-    usersData[index].firstName=newUserDetails[0];
-    usersData[index].lastName=newUserDetails[1];
-    usersData[index].capsule=newUserDetails[2];
-    usersData[index].age=newUserDetails[3];
-    usersData[index].city=newUserDetails[4];
-    usersData[index].gender=newUserDetails[5];
-    usersData[index].hobby=newUserDetails[6];
+    let i=0;
+    newUserDetails.unshift(id);
+    for (let key in usersData[index]) {
+        usersData[index][key]=newUserDetails[i];
+        i++;
+    }
     localStorage.setItem('students', JSON.stringify(usersData));
 }
 
