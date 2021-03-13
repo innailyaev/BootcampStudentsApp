@@ -3,8 +3,6 @@ const select=document.querySelector("#select");
 const searchInput=document.querySelector("#searchInput");
 let loader=document.querySelector('#loader');
 const logo=document.querySelector(".logo");
-let myStorage = window.localStorage;
-
 const usersApi='https://appleseed-wa.herokuapp.com/api/users/';
 const user='https://appleseed-wa.herokuapp.com/api/users';
 let usersData=[];
@@ -37,7 +35,12 @@ async function getUsersApi(){
 }
 
 async function createTable() {
-    await getUsersApi();
+    if(localStorage.getItem('students')){
+        console.log('local storage');
+        usersData=JSON.parse(localStorage.getItem('students'));
+    }
+    else
+        await getUsersApi();
     table.innerHTML += 
         `<thead>
             <tr>
@@ -68,9 +71,8 @@ async function createTable() {
         <td><i id=${u.id} class="far fa-trash-alt fa-2x" type="delete"></i></td>
     </tr>`
     })
-    console.log(myStorage);
-    JSON().parse(localStorage.setItem('students', usersData));
-   
+    localStorage.setItem('students', JSON.stringify(usersData));
+    
 }
 
 function removeUserFromArray(id){
@@ -79,6 +81,7 @@ function removeUserFromArray(id){
             usersData.splice(index,1);
         }
     })
+    localStorage.setItem('students', JSON.stringify(usersData));
     removeUserUi(id);   
 }
 
@@ -166,6 +169,7 @@ function updateUsersArray(id,newUserDetails){
     usersData[index].city=newUserDetails[4];
     usersData[index].gender=newUserDetails[5];
     usersData[index].hobby=newUserDetails[6];
+    localStorage.setItem('students', JSON.stringify(usersData));
 }
 
 function cancelEdit(id){
