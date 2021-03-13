@@ -3,6 +3,7 @@ const select=document.querySelector("#select");
 const searchInput=document.querySelector("#searchInput");
 let loader=document.querySelector('#loader');
 const logo=document.querySelector(".logo");
+let myStorage = window.localStorage;
 
 const usersApi='https://appleseed-wa.herokuapp.com/api/users/';
 const user='https://appleseed-wa.herokuapp.com/api/users';
@@ -67,6 +68,9 @@ async function createTable() {
         <td><i id=${u.id} class="far fa-trash-alt fa-2x" type="delete"></i></td>
     </tr>`
     })
+    console.log(myStorage);
+    JSON().parse(localStorage.setItem('students', usersData));
+   
 }
 
 function removeUserFromArray(id){

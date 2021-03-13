@@ -28,9 +28,22 @@ body{
 }
 
 .logo:hover{
-    border: solid #44b5c8;
+    animation: shake 0.5s;
+    animation-iteration-count: infinite;
+      
 }
-  
+
+@keyframes shake {
+    0% { transform: translate(1px, 1px) rotate(-20deg); }
+    10% { transform: translate(-1px, -2px) rotate(-21deg); }
+    30% { transform: translate(3px, 2px) rotate(-20deg); }
+    50% { transform: translate(-1px, 2px) rotate(-21deg); }
+    60% { transform: translate(-3px, 1px) rotate(-20deg); }
+    70% { transform: translate(3px, 1px) rotate(-21deg); }
+    90% { transform: translate(1px, 2px) rotate(-20deg); }
+    100% { transform: translate(1px, -2px) rotate(-21deg); }
+}
+   
 #loader {
     position:absolute;
     background: url(/images/loading.jpg);
@@ -109,6 +122,11 @@ tbody:nth-child(even){
     width: 100px;
     height: 30px;
     font-size: 1rem;
+    border-top: none;
+    border-left: none;
+    border-right: none;
+    outline: none;
+    border-color:#44b5c8 ;
 }
 
 #table tr td i {
