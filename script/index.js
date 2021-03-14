@@ -7,8 +7,8 @@ const usersApi='https://appleseed-wa.herokuapp.com/api/users/';
 const user='https://appleseed-wa.herokuapp.com/api/users';
 let usersData=[];
 let userDetails=[];
-let arrLength;
 createTable();
+
 
 async function getDetalisApi(id){
     const callApi = await fetch(`${user}/${id}`);
@@ -93,7 +93,7 @@ function searchByValue(){
         let filterValue, tr, td, i, txtValue;
         filterValue = searchInput.value.toUpperCase();
         tr = table.getElementsByTagName("tr");
-        
+
         // Loop through all table rows, and hide those who don't match the search query
         for (i = 0; i < tr.length; i++) {
           td = tr[i].getElementsByTagName("td")[selectValue];
@@ -131,8 +131,8 @@ function editDetails(id){
                 <td><input class=editInput type=text value=${usersData[index].city.replace(/ /g, "")}></td>
                 <td><input class=editInput type=text value=${usersData[index].gender}></td>
                 <td><input class=editInput type=text value=${usersData[index].hobby.replace(/ /g, "")}></td>
-                <td><i id=${id} class="far fa-check-square fa-2x" type="confirm"></i></td>
-                <td><i id=${id} class="far fa-window-close fa-2x" type="cancel"></i></td>`      
+                <td><i id=${id} class="far fa-check-square fa-2x confirm" type="confirm"></i></td>
+                <td><i id=${id} class="far fa-window-close fa-2x cancel" type="cancel"></i></td>`      
 }
 
 function confirm(id){

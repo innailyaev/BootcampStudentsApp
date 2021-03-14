@@ -13,10 +13,10 @@ body{
     position: fixed;
     left:0;
     transform: rotate(-20deg);
-    margin-top: 50px;
+    margin-top: 60px;
     margin-left: 20px;
-    width: 250px;
-    height: 250px;
+    width: 240px;
+    height: 240px;
     background: url(/images/loaderGroup.jpg);
     background-repeat: no-repeat;
     background-size: cover;
@@ -97,7 +97,7 @@ body{
 }
 
 #table tr:hover{
-    background-color: rgba(186,255,201);
+    background-color: rgba(201,201,255,0.8);
 }
 
 #table thead tr th {
@@ -128,3 +128,13 @@ tbody:nth-child(even){
     color: #44b5c8;
     cursor: pointer;
 }
+
+#table tr td .cancel{
+    color: red;
+}
+
+#table tr td .confirm{
+    color: rgb(26, 168, 50);
+
+}
+
